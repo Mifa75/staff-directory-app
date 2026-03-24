@@ -1,35 +1,20 @@
-import { StatusBar, StyleSheet, Text, View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useState } from "react";
+import { StatusBar } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import DirectoryScreen from "./src/screens/DirectoryScreen";
+import LoginScreen from "./src/screens/LoginScreen";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" />
-        <View>
-          <Text style={styles.title}>Staff Directory App</Text>
-          <Text style={styles.subtitle}>Project setup is working.</Text>
-        </View>
-      </SafeAreaView>
+      <StatusBar barStyle="dark-content" />
+      {isLoggedIn ? (
+        <DirectoryScreen onLogout={() => setIsLoggedIn(false)} />
+      ) : (
+        <LoginScreen onLogin={() => setIsLoggedIn(true)} />
+      )}
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#555",
-  },
-});
