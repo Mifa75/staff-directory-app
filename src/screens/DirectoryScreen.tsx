@@ -9,13 +9,17 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
-import { EMPLOYEES } from "../data/employees";
+import { EMPLOYEES, type Employee } from "../data/employees";
 
 type DirectoryScreenProps = {
   onLogout: () => void;
+  onSelectEmployee: (employee: Employee) => void;
 };
 
-export default function DirectoryScreen({ onLogout }: DirectoryScreenProps) {
+export default function DirectoryScreen({
+  onLogout,
+  onSelectEmployee,
+}: DirectoryScreenProps) {
   const [search, setSearch] = useState("");
 
   const filteredEmployees = useMemo(() => {
@@ -62,7 +66,12 @@ export default function DirectoryScreen({ onLogout }: DirectoryScreenProps) {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <EmployeeCard employee={item} />}
+          renderItem={({ item }) => (
+            <EmployeeCard
+              employee={item}
+              onPress={() => onSelectEmployee(item)}
+            />
+          )}
           ListEmptyComponent={
             <View style={styles.emptyState}>
               <Text style={styles.emptyTitle}>No employees found</Text>

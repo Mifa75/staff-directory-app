@@ -1,13 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { Employee } from "../data/employees";
 
 type EmployeeCardProps = {
   employee: Employee;
+  onPress: () => void;
 };
 
-export default function EmployeeCard({ employee }: EmployeeCardProps) {
+export default function EmployeeCard({ employee, onPress }: EmployeeCardProps) {
   return (
-    <View style={styles.card}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+    >
       <View style={styles.avatar}>
         <Text style={styles.avatarText}>{getInitials(employee.name)}</Text>
       </View>
@@ -16,11 +20,11 @@ export default function EmployeeCard({ employee }: EmployeeCardProps) {
         <Text style={styles.name}>{employee.name}</Text>
         <Text style={styles.role}>{employee.role}</Text>
         <Text style={styles.meta}>
-          {employee.department} . {employee.location}
+          {employee.department} • {employee.location}
         </Text>
         <Text style={styles.email}>{employee.email}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -42,6 +46,9 @@ const styles = StyleSheet.create({
     borderColor: "#E2E8F0",
     padding: 16,
     marginBottom: 12,
+  },
+  cardPressed: {
+    opacity: 0.85,
   },
   avatar: {
     width: 52,
