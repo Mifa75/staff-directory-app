@@ -4,9 +4,16 @@ import type { Employee } from "../data/employees";
 type EmployeeCardProps = {
   employee: Employee;
   onPress: () => void;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 };
 
-export default function EmployeeCard({ employee, onPress }: EmployeeCardProps) {
+export default function EmployeeCard({
+  employee,
+  onPress,
+  isFavorite,
+  onToggleFavorite,
+}: EmployeeCardProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -17,7 +24,20 @@ export default function EmployeeCard({ employee, onPress }: EmployeeCardProps) {
       </View>
 
       <View style={styles.cardContent}>
-        <Text style={styles.name}>{employee.name}</Text>
+        <View style={styles.topRow}>
+          <Text style={styles.name}>{employee.name}</Text>
+
+          <Pressable
+            onPress={onToggleFavorite}
+            style={({ pressed }) => [
+              styles.favoriteButton,
+              pressed && styles.favoritePressed,
+            ]}
+          >
+            <Text style={styles.favoriteText}>{isFavorite ? "★" : "☆"}</Text>
+          </Pressable>
+        </View>
+
         <Text style={styles.role}>{employee.role}</Text>
         <Text style={styles.meta}>
           {employee.department} • {employee.location}
@@ -67,11 +87,32 @@ const styles = StyleSheet.create({
   cardContent: {
     flex: 1,
   },
+  topRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: 4,
+  },
   name: {
     fontSize: 17,
     fontWeight: "700",
     color: "#0F172A",
     marginBottom: 4,
+  },
+  favoriteButton: {
+    minWidth: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  favoritePressed: {
+    opacity: 0.8,
+  },
+  favoriteText: {
+    fontSize: 20,
+    color: "#F59E0B",
   },
   role: {
     fontSize: 15,

@@ -14,11 +14,17 @@ import { EMPLOYEES, type Employee } from "../data/employees";
 type DirectoryScreenProps = {
   onLogout: () => void;
   onSelectEmployee: (employee: Employee) => void;
+  favoriteIds: string[];
+  onToggleFavorite: (employeeId: string) => void;
+  onOpenFavorites: () => void;
 };
 
 export default function DirectoryScreen({
   onLogout,
   onSelectEmployee,
+  favoriteIds,
+  onToggleFavorite,
+  onOpenFavorites,
 }: DirectoryScreenProps) {
   const [search, setSearch] = useState("");
 
@@ -42,15 +48,19 @@ export default function DirectoryScreen({
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.topRow}>
-          <View>
-            <Text style={styles.title}>Directory</Text>
-            <Text style={styles.subtitle}>
-              Search employees by name, role, department, or location.
-            </Text>
-          </View>
+          <Text style={styles.title}>Directory</Text>
+          <Text style={styles.subtitle}>
+            Search employees by name, role, department, or location.
+          </Text>
+        </View>
 
-          <Pressable onPress={onLogout} style={styles.logoutButton}>
-            <Text style={styles.logoutText}>Log out</Text>
+        <View style={styles.actionsRow}>
+          <Pressable onPress={onLogout} style={styles.secondaryButton}>
+            <Text style={styles.secondaryButtonText}>Log out</Text>
+          </Pressable>
+
+          <Pressable onPress={onOpenFavorites} style={styles.primaryButton}>
+            <Text style={styles.primaryButtonText}>Favorites</Text>
           </Pressable>
         </View>
 
@@ -70,6 +80,8 @@ export default function DirectoryScreen({
             <EmployeeCard
               employee={item}
               onPress={() => onSelectEmployee(item)}
+              isFavorite={favoriteIds.includes(item.id)}
+              onToggleFavorite={() => onToggleFavorite(item.id)}
             />
           )}
           ListEmptyComponent={
@@ -111,17 +123,32 @@ const styles = StyleSheet.create({
     color: "#475569",
     marginBottom: 16,
   },
-  logoutButton: {
-    alignSelf: "flex-start",
+  actionsRow: {
+    flexDirection: "row",
+    marginBottom: 16,
+  },
+  secondaryButton: {
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: "#E2E8F0",
+    marginRight: 12,
   },
-  logoutText: {
+  secondaryButtonText: {
     fontSize: 14,
     fontWeight: "600",
     color: "#0F172A",
+  },
+  primaryButton: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: "#0F172A",
+  },
+  primaryButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
   searchInput: {
     height: 52,

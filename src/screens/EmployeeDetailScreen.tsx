@@ -5,6 +5,8 @@ import type { Employee } from "../data/employees";
 type EmployeeDetailsScreenProps = {
   employee: Employee;
   onBack: () => void;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 };
 
 type LabelValueProps = {
@@ -33,6 +35,8 @@ function getInitials(name: string) {
 export default function EmployeeDetailScreen({
   employee,
   onBack,
+  isFavorite,
+  onToggleFavorite,
 }: EmployeeDetailsScreenProps) {
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -51,6 +55,11 @@ export default function EmployeeDetailScreen({
           <Text style={styles.meta}>
             {employee.department} • {employee.location}
           </Text>
+          <Pressable onPress={onToggleFavorite} style={styles.favoriteButton}>
+            <Text style={styles.favoriteButtonText}>
+              {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+            </Text>
+          </Pressable>
         </View>
 
         <View style={styles.infoCard}>
@@ -133,6 +142,17 @@ const styles = StyleSheet.create({
   meta: {
     fontSize: 15,
     color: "#64748B",
+  },
+  favoriteButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: "#FEF3C7",
+  },
+  favoriteButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#92400E",
   },
   infoCard: {
     backgroundColor: "#FFFFFF",
