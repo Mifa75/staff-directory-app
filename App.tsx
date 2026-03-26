@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { StatusBar } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, StatusBar, View, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { type Employee } from "./src/data/employees";
+import { useFavoritesStore } from "./src/store/useFavoritesStore";
 import DirectoryScreen from "./src/screens/DirectoryScreen";
 import EmployeeDetailScreen from "./src/screens/EmployeeDetailScreen";
 import FavoritesScreen from "./src/screens/FavoritesScreen";
@@ -14,9 +15,28 @@ export default function App() {
   );
   const [isViewingFavorites, setIsViewingFavorites] = useState(false);
 
+  const loadFavorites = useFavoritesStore((state) => state.loadFavorites);
+  const hasHydrated = useFavoritesStore((state) => state.hasHydrated);
+
+  useEffect(() => {
+    loadFavorites();
+  }, [loadFavorites]);
+
+  if (!hasHydrated) {
+    return (
+      <SafeAreaProvider>
+        <View style={styles.loadingContainer}>
+          <StatusBar barStyle="dark-content" />
+          <ActivityIndicator size="large" />
+        </View>
+      </SafeAreaProvider>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <StatusBar barStyle="dark-content" />
+
       {!isLoggedIn ? (
         <LoginScreen onLogin={() => setIsLoggedIn(true)} />
       ) : selectedEmployee ? (
@@ -46,3 +66,12 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8FAFC",
+  },
+});
