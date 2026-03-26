@@ -1,23 +1,25 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
-import type { Employee } from "../data/employees";
+import { EMPLOYEES, type Employee } from "../data/employees";
+import { useFavoritesStore } from "../store/useFavoritesStore";
 
 type FavoritesScreenProps = {
-  favoriteEmployees: Employee[];
   onBack: () => void;
   onSelectEmployee: (employee: Employee) => void;
-  favoriteIds: string[];
-  onToggleFavorite: (employeeId: string) => void;
 };
 
 export default function FavoritesScreen({
-  favoriteEmployees,
   onBack,
   onSelectEmployee,
-  favoriteIds,
-  onToggleFavorite,
 }: FavoritesScreenProps) {
+  const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const favoriteEmployees = EMPLOYEES.filter((employee) =>
+    favoriteIds.includes(employee.id),
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -35,12 +37,13 @@ export default function FavoritesScreen({
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          style={styles.list}
           renderItem={({ item }) => (
             <EmployeeCard
               employee={item}
               onPress={() => onSelectEmployee(item)}
               isFavorite={favoriteIds.includes(item.id)}
-              onToggleFavorite={() => onToggleFavorite(item.id)}
+              onToggleFavorite={() => toggleFavorite(item.id)}
             />
           )}
           ListEmptyComponent={
@@ -91,6 +94,9 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: "#475569",
     marginBottom: 16,
+  },
+  list: {
+    flex: 1,
   },
   listContent: {
     paddingBottom: 24,

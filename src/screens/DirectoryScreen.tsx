@@ -10,23 +10,23 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
+import { useFavoritesStore } from "../store/useFavoritesStore";
 
 type DirectoryScreenProps = {
   onLogout: () => void;
   onSelectEmployee: (employee: Employee) => void;
-  favoriteIds: string[];
-  onToggleFavorite: (employeeId: string) => void;
   onOpenFavorites: () => void;
 };
 
 export default function DirectoryScreen({
   onLogout,
   onSelectEmployee,
-  favoriteIds,
-  onToggleFavorite,
   onOpenFavorites,
 }: DirectoryScreenProps) {
   const [search, setSearch] = useState("");
+
+  const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
 
   const filteredEmployees = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -76,12 +76,13 @@ export default function DirectoryScreen({
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          style={styles.list}
           renderItem={({ item }) => (
             <EmployeeCard
               employee={item}
               onPress={() => onSelectEmployee(item)}
               isFavorite={favoriteIds.includes(item.id)}
-              onToggleFavorite={() => onToggleFavorite(item.id)}
+              onToggleFavorite={() => toggleFavorite(item.id)}
             />
           )}
           ListEmptyComponent={
@@ -160,9 +161,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     marginBottom: 16,
   },
+  list: {
+    flex: 1,
+  },
   listContent: {
     paddingBottom: 24,
-    gap: 12,
   },
   emptyState: {
     marginTop: 40,

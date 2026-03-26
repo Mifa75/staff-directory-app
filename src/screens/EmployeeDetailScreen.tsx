@@ -1,12 +1,11 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { Employee } from "../data/employees";
+import { useFavoritesStore } from "../store/useFavoritesStore";
 
 type EmployeeDetailsScreenProps = {
   employee: Employee;
   onBack: () => void;
-  isFavorite: boolean;
-  onToggleFavorite: () => void;
 };
 
 type LabelValueProps = {
@@ -35,9 +34,12 @@ function getInitials(name: string) {
 export default function EmployeeDetailScreen({
   employee,
   onBack,
-  isFavorite,
-  onToggleFavorite,
 }: EmployeeDetailsScreenProps) {
+  const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const isFavorite = favoriteIds.includes(employee.id);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -55,7 +57,10 @@ export default function EmployeeDetailScreen({
           <Text style={styles.meta}>
             {employee.department} • {employee.location}
           </Text>
-          <Pressable onPress={onToggleFavorite} style={styles.favoriteButton}>
+          <Pressable
+            onPress={() => toggleFavorite(employee.id)}
+            style={styles.favoriteButton}
+          >
             <Text style={styles.favoriteButtonText}>
               {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
             </Text>

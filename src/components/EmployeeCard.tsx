@@ -15,36 +15,39 @@ export default function EmployeeCard({
   onToggleFavorite,
 }: EmployeeCardProps) {
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-    >
-      <View style={styles.avatar}>
-        <Text style={styles.avatarText}>{getInitials(employee.name)}</Text>
-      </View>
-
-      <View style={styles.cardContent}>
-        <View style={styles.topRow}>
-          <Text style={styles.name}>{employee.name}</Text>
-
-          <Pressable
-            onPress={onToggleFavorite}
-            style={({ pressed }) => [
-              styles.favoriteButton,
-              pressed && styles.favoritePressed,
-            ]}
-          >
-            <Text style={styles.favoriteText}>{isFavorite ? "★" : "☆"}</Text>
-          </Pressable>
+    <View style={styles.card}>
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.mainPressable,
+          pressed && styles.mainPressablePressed,
+        ]}
+      >
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>{getInitials(employee.name)}</Text>
         </View>
 
-        <Text style={styles.role}>{employee.role}</Text>
-        <Text style={styles.meta}>
-          {employee.department} • {employee.location}
-        </Text>
-        <Text style={styles.email}>{employee.email}</Text>
-      </View>
-    </Pressable>
+        <View style={styles.cardContent}>
+          <Text style={styles.name}>{employee.name}</Text>
+          <Text style={styles.role}>{employee.role}</Text>
+          <Text style={styles.meta}>
+            {employee.department} • {employee.location}
+          </Text>
+          <Text style={styles.email}>{employee.email}</Text>
+        </View>
+      </Pressable>
+
+      <Pressable
+        onPress={onToggleFavorite}
+        hitSlop={8}
+        style={({ pressed }) => [
+          styles.favoriteButton,
+          pressed && styles.favoritePressed,
+        ]}
+      >
+        <Text style={styles.favoriteText}>{isFavorite ? "★" : "☆"}</Text>
+      </Pressable>
+    </View>
   );
 }
 
@@ -60,6 +63,7 @@ function getInitials(name: string) {
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
+    alignItems: "flex-start",
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     borderWidth: 1,
@@ -67,7 +71,11 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
-  cardPressed: {
+  mainPressable: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  mainPressablePressed: {
     opacity: 0.85,
   },
   avatar: {
@@ -87,32 +95,11 @@ const styles = StyleSheet.create({
   cardContent: {
     flex: 1,
   },
-  topRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    marginBottom: 4,
-  },
   name: {
     fontSize: 17,
     fontWeight: "700",
     color: "#0F172A",
     marginBottom: 4,
-  },
-  favoriteButton: {
-    minWidth: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#F1F5F9",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  favoritePressed: {
-    opacity: 0.8,
-  },
-  favoriteText: {
-    fontSize: 20,
-    color: "#F59E0B",
   },
   role: {
     fontSize: 15,
@@ -127,5 +114,21 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 14,
     color: "#2563EB",
+  },
+  favoriteButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 12,
+  },
+  favoritePressed: {
+    opacity: 0.75,
+  },
+  favoriteText: {
+    fontSize: 20,
+    color: "#F59E0B",
   },
 });
