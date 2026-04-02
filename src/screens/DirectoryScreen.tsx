@@ -15,13 +15,11 @@ import { useFavoritesStore } from "../store/useFavoritesStore";
 type DirectoryScreenProps = {
   onLogout: () => void;
   onSelectEmployee: (employee: Employee) => void;
-  onOpenFavorites: () => void;
 };
 
 export default function DirectoryScreen({
   onLogout,
   onSelectEmployee,
-  onOpenFavorites,
 }: DirectoryScreenProps) {
   const [search, setSearch] = useState("");
 
@@ -34,6 +32,7 @@ export default function DirectoryScreen({
     if (!normalizedSearch) {
       return EMPLOYEES;
     }
+
     return EMPLOYEES.filter((employee) => {
       return (
         employee.name.toLowerCase().includes(normalizedSearch) ||
@@ -57,10 +56,6 @@ export default function DirectoryScreen({
         <View style={styles.actionsRow}>
           <Pressable onPress={onLogout} style={styles.secondaryButton}>
             <Text style={styles.secondaryButtonText}>Log out</Text>
-          </Pressable>
-
-          <Pressable onPress={onOpenFavorites} style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Favorites</Text>
           </Pressable>
         </View>
 
@@ -102,7 +97,7 @@ export default function DirectoryScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: "#F8FAFC",
   },
   container: {
     flex: 1,
@@ -115,14 +110,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "700",
-    color: "#0f172a",
+    color: "#0F172A",
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
     color: "#475569",
-    marginBottom: 16,
   },
   actionsRow: {
     flexDirection: "row",
@@ -133,23 +127,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: "#E2E8F0",
-    marginRight: 12,
   },
   secondaryButtonText: {
     fontSize: 14,
     fontWeight: "600",
     color: "#0F172A",
-  },
-  primaryButton: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-    backgroundColor: "#0F172A",
-  },
-  primaryButtonText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   searchInput: {
     height: 52,

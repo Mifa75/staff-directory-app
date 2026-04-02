@@ -1,16 +1,14 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
 
 type FavoritesScreenProps = {
-  onBack: () => void;
   onSelectEmployee: (employee: Employee) => void;
 };
 
 export default function FavoritesScreen({
-  onBack,
   onSelectEmployee,
 }: FavoritesScreenProps) {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
@@ -23,10 +21,6 @@ export default function FavoritesScreen({
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Pressable onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </Pressable>
-
         <Text style={styles.title}>Favorites</Text>
         <Text style={styles.subtitle}>
           Quick access to your saved employee contacts.
@@ -35,9 +29,9 @@ export default function FavoritesScreen({
         <FlatList
           data={favoriteEmployees}
           keyExtractor={(item) => item.id}
+          style={styles.list}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
-          style={styles.list}
           renderItem={({ item }) => (
             <EmployeeCard
               employee={item}
@@ -48,7 +42,7 @@ export default function FavoritesScreen({
           )}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>No favorite contracts yet</Text>
+              <Text style={styles.emptyTitle}>No favorite contacts yet</Text>
               <Text style={styles.emptyText}>
                 Save employees from the directory to see them here.
               </Text>
@@ -69,19 +63,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 12,
-  },
-  backButton: {
-    alignSelf: "flex-start",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-    backgroundColor: "#E2E8F0",
-    marginBottom: 20,
-  },
-  backButtonText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#0F172A",
   },
   title: {
     fontSize: 30,

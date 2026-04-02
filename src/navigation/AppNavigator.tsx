@@ -4,31 +4,28 @@ import {
   type NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Pressable, Text } from "react-native";
 
 import { type Employee } from "../data/employees";
-import DirectoryScreen from "../screens/DirectoryScreen";
 import EmployeeDetailScreen from "../screens/EmployeeDetailScreen";
-import FavoritesScreen from "../screens/FavoritesScreen";
 import LoginScreen from "../screens/LoginScreen";
+import MainTabs from "./MainTabs";
 
 export type RootStackParamList = {
   Login: undefined;
-  Directory: undefined;
-  Favorites: undefined;
+  MainTabs: undefined;
   EmployeeDetail: { employee: Employee };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-type DirectoryScreenNavigationProp = NativeStackNavigationProp<
+type MainTabsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "Directory"
+  "MainTabs"
 >;
 
-type FavoritesScreenNavigationProp = NativeStackNavigationProp<
+type EmployeeDetailScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "Favorites"
+  "EmployeeDetail"
 >;
 
 type EmployeeDetailRouteProp = RouteProp<RootStackParamList, "EmployeeDetail">;
@@ -46,44 +43,14 @@ export default function AppNavigator() {
         ) : (
           <>
             <Stack.Screen
-              name="Directory"
+              name="MainTabs"
               options={{
-                headerTitle: "Directory",
-                headerRight: () => (
-                  <Pressable onPress={() => setIsLoggedIn(false)}>
-                    <Text style={{ color: "#0F172A", fontWeight: "600" }}>
-                      Log out
-                    </Text>
-                  </Pressable>
-                ),
+                headerShown: false,
               }}
             >
-              {({
-                navigation,
-              }: {
-                navigation: DirectoryScreenNavigationProp;
-              }) => (
-                <DirectoryScreen
+              {({ navigation }: { navigation: MainTabsNavigationProp }) => (
+                <MainTabs
                   onLogout={() => setIsLoggedIn(false)}
-                  onOpenFavorites={() => navigation.navigate("Favorites")}
-                  onSelectEmployee={(employee) =>
-                    navigation.navigate("EmployeeDetail", { employee })
-                  }
-                />
-              )}
-            </Stack.Screen>
-
-            <Stack.Screen
-              name="Favorites"
-              options={{ headerTitle: "Favorites" }}
-            >
-              {({
-                navigation,
-              }: {
-                navigation: FavoritesScreenNavigationProp;
-              }) => (
-                <FavoritesScreen
-                  onBack={() => navigation.goBack()}
                   onSelectEmployee={(employee) =>
                     navigation.navigate("EmployeeDetail", { employee })
                   }
@@ -100,7 +67,7 @@ export default function AppNavigator() {
                 navigation,
               }: {
                 route: EmployeeDetailRouteProp;
-                navigation: DirectoryScreenNavigationProp;
+                navigation: EmployeeDetailScreenNavigationProp;
               }) => (
                 <EmployeeDetailScreen
                   employee={route.params.employee}
