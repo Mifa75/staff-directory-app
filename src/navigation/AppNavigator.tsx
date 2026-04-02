@@ -47,7 +47,7 @@ export default function AppNavigator() {
           <>
             <Stack.Screen
               name="Directory"
-              options={({ navigation }) => ({
+              options={{
                 headerTitle: "Directory",
                 headerRight: () => (
                   <Pressable onPress={() => setIsLoggedIn(false)}>
@@ -56,7 +56,7 @@ export default function AppNavigator() {
                     </Text>
                   </Pressable>
                 ),
-              })}
+              }}
             >
               {({
                 navigation,
