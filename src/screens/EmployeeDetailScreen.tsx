@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
+import { openEmail, openPhone } from "../utils/contactActions";
 
 type EmployeeDetailsScreenProps = {
   employee: Employee;
@@ -74,11 +75,23 @@ export default function EmployeeDetailScreen({
         </View>
 
         <View style={styles.actionsRow}>
-          <Pressable style={styles.primaryButton}>
+          <Pressable
+            onPress={() => openEmail(employee.email)}
+            style={({ pressed }) => [
+              styles.primaryButton,
+              pressed && styles.buttonPressed,
+            ]}
+          >
             <Text style={styles.primaryButtonText}>Email</Text>
           </Pressable>
 
-          <Pressable style={styles.secondaryButton}>
+          <Pressable
+            onPress={() => openPhone(employee.phone)}
+            style={({ pressed }) => [
+              styles.secondaryButton,
+              pressed && styles.buttonPressed,
+            ]}
+          >
             <Text style={styles.secondaryButtonText}>Call</Text>
           </Pressable>
         </View>
@@ -109,6 +122,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#0F172A",
+  },
+  buttonPressed: {
+    opacity: 0.8,
   },
   headerCard: {
     backgroundColor: "#FFFFFF",
