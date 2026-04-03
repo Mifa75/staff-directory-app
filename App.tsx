@@ -3,16 +3,27 @@ import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppNavigator from "./src/navigation/AppNavigator";
 import { useFavoritesStore } from "./src/store/useFavoritesStore";
+import { useRecentContactsStore } from "./src/store/useRecentContactsStore";
 
 export default function App() {
   const loadFavorites = useFavoritesStore((state) => state.loadFavorites);
-  const hasHydrated = useFavoritesStore((state) => state.hasHydrated);
+  const hasFavoritesHydrated = useFavoritesStore((state) => state.hasHydrated);
+
+  const loadRecentContacts = useRecentContactsStore(
+    (state) => state.loadRecentContacts,
+  );
+  const hasRecentContactsHydrated = useRecentContactsStore(
+    (state) => state.hasHydrated,
+  );
 
   useEffect(() => {
     loadFavorites();
-  }, [loadFavorites]);
+    loadRecentContacts();
+  }, [loadFavorites, loadRecentContacts]);
 
-  if (!hasHydrated) {
+  const isReady = hasFavoritesHydrated && hasRecentContactsHydrated;
+
+  if (!isReady) {
     return (
       <SafeAreaProvider>
         <View style={styles.loadingContainer}>

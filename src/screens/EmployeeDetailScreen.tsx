@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
+import { useRecentContactsStore } from "../store/useRecentContactsStore";
 import { openEmail, openPhone } from "../utils/contactActions";
 
 type EmployeeDetailsScreenProps = {
@@ -38,8 +40,15 @@ export default function EmployeeDetailScreen({
 }: EmployeeDetailsScreenProps) {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  const addRecentContact = useRecentContactsStore(
+    (state) => state.addRecentContact,
+  );
 
   const isFavorite = favoriteIds.includes(employee.id);
+
+  useEffect(() => {
+    addRecentContact(employee.id);
+  }, [employee.id, addRecentContact]);
 
   return (
     <SafeAreaView style={styles.safeArea}>

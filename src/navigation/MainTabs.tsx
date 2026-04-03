@@ -3,10 +3,12 @@ import { Text } from "react-native";
 import type { Employee } from "../data/employees";
 import DirectoryScreen from "../screens/DirectoryScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
+import RecentsScreen from "../screens/RecentsScreen";
 
 export type MainTabParamList = {
   DirectoryTab: undefined;
   FavoritesTab: undefined;
+  RecentsTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -60,6 +62,19 @@ export default function MainTabs({
         }}
       >
         {() => <FavoritesScreen onSelectEmployee={onSelectEmployee} />}
+      </Tab.Screen>
+
+      <Tab.Screen
+        name="RecentsTab"
+        options={{
+          title: "Recents",
+          tabBarLabel: "Recents",
+          tabBarIcon: ({ color }) => (
+            <Text style={{ color, fontSize: 16 }}>🕘</Text>
+          ),
+        }}
+      >
+        {() => <RecentsScreen onSelectEmployee={onSelectEmployee} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
