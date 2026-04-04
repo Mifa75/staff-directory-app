@@ -1,50 +1,55 @@
-# Welcome to your Expo app 👋
+# Staff Directory App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile staff directory app built with **React Native**, **Expo**, and **TypeScript**.
 
-## Get started
+## Overview
 
-1. Install dependencies
+This project allows users to browse employee contacts in a clean mobile interface, search by different fields, save favorites, view recent contacts, and open employee details.
 
-   ```bash
-   npm install
-   ```
+It was built as a portfolio project to demonstrate practical mobile development skills, reusable components, navigation, state management, and theme support.
 
-2. Start the app
+## Features
 
-   ```bash
-   npx expo start
-   ```
+- Browse a staff directory
+- Search employees by **name, role, department, or location**
+- View employee details
+- Save and remove favorite contacts
+- Access recent contacts
+- Light and dark mode support
+- Reusable employee card component
+- Clean mobile-first UI
 
-In the output, you'll find options to open the app in a
+## Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- Zustand
+- AsyncStorage
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Screenshots
 
-## Get a fresh project
+### Directory Screen
 
-When you're ready, run:
+![Directory Screen](./assets/screenshots/directory-light.png)
+
+### Dark Mode
+
+![Dark Mode](./assets/screenshots/directory-dark.png)
+
+### Employee Details
+
+![Employee Details](./assets/screenshots/employee-details.png)
+
+### Favorites
+
+![Favorites](./assets/screenshots/favorites.png)
+
+````
+## Run the Project
 
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+npm install
+npx expo start
+````
