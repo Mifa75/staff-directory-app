@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { colors } from "../theme/colors";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 
 type LoginScreenProps = {
@@ -14,19 +15,33 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
   const isFormValid = email.trim() !== "" && password.trim() !== "";
 
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Staff Directory</Text>
-          <Text style={styles.subtitle}>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>
+            Staff Directory
+          </Text>
+          <Text style={[styles.subtitle, { color: colors.textMuted }]}>
             Sign in to access employee contacts and departments.
           </Text>
         </View>
 
-        <View style={styles.form}>
+        <View
+          style={[
+            styles.form,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}
+        >
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>
+              Email
+            </Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
@@ -34,12 +49,21 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  borderColor: colors.borderInput,
+                  backgroundColor: colors.surface,
+                  color: colors.textPrimary,
+                },
+              ]}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>
+              Password
+            </Text>
             <TextInput
               value={password}
               onChangeText={setPassword}
@@ -47,7 +71,14 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  borderColor: colors.borderInput,
+                  backgroundColor: colors.surface,
+                  color: colors.textPrimary,
+                },
+              ]}
             />
           </View>
 
@@ -56,14 +87,17 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             disabled={!isFormValid}
             style={({ pressed }) => [
               styles.button,
-              !isFormValid && styles.buttonDisabled,
+              { backgroundColor: colors.textPrimary },
+              !isFormValid && { backgroundColor: colors.buttonDisabled },
               pressed && isFormValid && styles.buttonPressed,
             ]}
           >
-            <Text style={styles.buttonText}>Sign In</Text>
+            <Text style={[styles.buttonText, { color: colors.primaryText }]}>
+              Sign In
+            </Text>
           </Pressable>
 
-          <Text style={styles.helperText}>
+          <Text style={[styles.helperText, { color: colors.textMuted }]}>
             Demo version: enter any email and password.
           </Text>
         </View>
@@ -75,7 +109,6 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
@@ -89,20 +122,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.lg,
   },
   subtitle: {
     fontSize: 16,
     lineHeight: 24,
-    color: colors.textMuted,
   },
   form: {
-    backgroundColor: colors.primaryText,
     borderRadius: 16,
     padding: spacing.xxxl,
     borderWidth: 1,
-    borderColor: colors.border,
   },
   inputGroup: {
     marginBottom: spacing.xxxl,
@@ -110,42 +139,32 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: colors.textSecondary,
     marginBottom: spacing.sm,
   },
   input: {
     height: 52,
     borderWidth: 1,
-    borderColor: colors.borderInput,
     borderRadius: 12,
     paddingHorizontal: spacing.xl,
     fontSize: 16,
-    backgroundColor: colors.primaryText,
-    color: colors.textPrimary,
   },
   button: {
     marginTop: spacing.sm,
     height: 52,
     borderRadius: 12,
-    backgroundColor: colors.textPrimary,
     alignItems: "center",
     justifyContent: "center",
-  },
-  buttonDisabled: {
-    backgroundColor: colors.buttonDisabled,
   },
   buttonPressed: {
     opacity: 0.85,
   },
   buttonText: {
-    color: colors.primaryText,
     fontSize: 16,
     fontWeight: "600",
   },
   helperText: {
     marginTop: spacing.xl,
     fontSize: 13,
-    color: colors.textMuted,
     textAlign: "center",
   },
 });

@@ -4,25 +4,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
 import { useRecentContactsStore } from "../store/useRecentContactsStore";
-import { colors } from "../theme/colors";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { openEmail, openPhone } from "../utils/contactActions";
 
 type EmployeeDetailsScreenProps = {
   employee: Employee;
-  onBack: () => void;
 };
 
 type LabelValueProps = {
   label: string;
   value: string;
+  labelColor: string;
+  valueColor: string;
 };
 
-function LabelValue({ label, value }: LabelValueProps) {
+function LabelValue({ label, value, labelColor, valueColor }: LabelValueProps) {
   return (
     <View style={styles.infoRow}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value}</Text>
+      <Text style={[styles.label, { color: labelColor }]}>{label}</Text>
+      <Text style={[styles.value, { color: valueColor }]}>{value}</Text>
     </View>
   );
 }
@@ -47,58 +49,112 @@ export default function EmployeeDetailScreen({
 
   const isFavorite = favoriteIds.includes(employee.id);
 
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
+
   useEffect(() => {
     addRecentContact(employee.id);
   }, [employee.id, addRecentContact]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
       <View style={styles.container}>
-        <View style={styles.headerCard}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{getInitials(employee.name)}</Text>
+        <View
+          style={[
+            styles.headerCard,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}
+        >
+          <View
+            style={[styles.avatar, { backgroundColor: colors.textPrimary }]}
+          >
+            <Text style={[styles.avatarText, { color: colors.primaryText }]}>
+              {getInitials(employee.name)}
+            </Text>
           </View>
 
-          <Text style={styles.name}>{employee.name}</Text>
-          <Text style={styles.role}>{employee.role}</Text>
-          <Text style={styles.meta}>
+          <Text style={[styles.name, { color: colors.textPrimary }]}>
+            {employee.name}
+          </Text>
+          <Text style={[styles.role, { color: colors.textSecondary }]}>
+            {employee.role}
+          </Text>
+          <Text style={[styles.meta, { color: colors.textMuted }]}>
             {employee.department} • {employee.location}
           </Text>
           <Pressable
             onPress={() => toggleFavorite(employee.id)}
-            style={styles.favoriteButton}
+            style={[
+              styles.favoriteButton,
+              { backgroundColor: colors.warningSurface },
+            ]}
           >
-            <Text style={styles.favoriteButtonText}>
+            <Text
+              style={[styles.favoriteButtonText, { color: colors.warningText }]}
+            >
               {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
             </Text>
           </Pressable>
         </View>
 
-        <View style={styles.infoCard}>
-          <LabelValue label="Email" value={employee.email} />
-          <LabelValue label="Phone" value={employee.phone} />
-          <LabelValue label="Manager" value={employee.manager} />
+        <View
+          style={[
+            styles.infoCard,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}
+        >
+          <LabelValue
+            label="Email"
+            value={employee.email}
+            labelColor={colors.textMuted}
+            valueColor={colors.textPrimary}
+          />
+          <LabelValue
+            label="Phone"
+            value={employee.phone}
+            labelColor={colors.textMuted}
+            valueColor={colors.textPrimary}
+          />
+          <LabelValue
+            label="Manager"
+            value={employee.manager}
+            labelColor={colors.textMuted}
+            valueColor={colors.textPrimary}
+          />
         </View>
 
         <View style={styles.actionsRow}>
           <Pressable
             onPress={() => openEmail(employee.email)}
             style={({ pressed }) => [
-              styles.primaryButton,
+              [styles.primaryButton, { backgroundColor: colors.textPrimary }],
               pressed && styles.buttonPressed,
             ]}
           >
-            <Text style={styles.primaryButtonText}>Email</Text>
+            <Text
+              style={[styles.primaryButtonText, { color: colors.primaryText }]}
+            >
+              Email
+            </Text>
           </Pressable>
 
           <Pressable
             onPress={() => openPhone(employee.phone)}
             style={({ pressed }) => [
-              styles.secondaryButton,
+              [styles.secondaryButton, { backgroundColor: colors.border }],
               pressed && styles.buttonPressed,
             ]}
           >
-            <Text style={styles.secondaryButtonText}>Call</Text>
+            <Text
+              style={[
+                styles.secondaryButtonText,
+                { color: colors.textPrimary },
+              ]}
+            >
+              Call
+            </Text>
           </Pressable>
         </View>
       </View>
@@ -109,7 +165,6 @@ export default function EmployeeDetailScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
@@ -120,10 +175,8 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   headerCard: {
-    backgroundColor: colors.surface,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing.xxxxl,
     alignItems: "center",
     marginBottom: spacing.xxl,
@@ -132,47 +185,38 @@ const styles = StyleSheet.create({
     width: 76,
     height: 76,
     borderRadius: 38,
-    backgroundColor: colors.textPrimary,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: spacing.xxl,
   },
   avatarText: {
-    color: colors.primaryText,
     fontSize: 24,
     fontWeight: "700",
   },
   name: {
     fontSize: 26,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.xs,
   },
   role: {
     fontSize: 17,
-    color: colors.textSecondary,
     marginBottom: spacing.xs,
   },
   meta: {
     fontSize: 15,
-    color: colors.textMuted,
   },
   favoriteButton: {
     paddingHorizontal: spacing.xxl,
     paddingVertical: spacing.md,
     borderRadius: 10,
-    backgroundColor: colors.warningSurface,
   },
   favoriteButtonText: {
     fontSize: 14,
     fontWeight: "600",
-    color: colors.warningText,
   },
   infoCard: {
-    backgroundColor: colors.primaryText,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing.xxxl,
     marginBottom: spacing.xxxl,
   },
@@ -182,13 +226,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: "600",
-    color: colors.textMuted,
     marginBottom: spacing.xxs,
     textTransform: "uppercase",
   },
   value: {
     fontSize: 16,
-    color: colors.textPrimary,
   },
   actionsRow: {
     flexDirection: "row",
@@ -198,12 +240,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 52,
     borderRadius: 12,
-    backgroundColor: colors.textPrimary,
     alignItems: "center",
     justifyContent: "center",
   },
   primaryButtonText: {
-    color: colors.primaryText,
     fontSize: 16,
     fontWeight: "600",
   },
@@ -211,12 +251,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 52,
     borderRadius: 12,
-    backgroundColor: colors.border,
     alignItems: "center",
     justifyContent: "center",
   },
   secondaryButtonText: {
-    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: "600",
   },

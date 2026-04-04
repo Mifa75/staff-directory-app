@@ -4,6 +4,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppNavigator from "./src/navigation/AppNavigator";
 import { useFavoritesStore } from "./src/store/useFavoritesStore";
 import { useRecentContactsStore } from "./src/store/useRecentContactsStore";
+import { useThemeStore } from "./src/store/useThemeStore";
+import { getColors } from "./src/theme/colors";
 
 export default function App() {
   const loadFavorites = useFavoritesStore((state) => state.loadFavorites);
@@ -16,19 +18,34 @@ export default function App() {
     (state) => state.hasHydrated,
   );
 
+  const loadTheme = useThemeStore((state) => state.loadTheme);
+  const hasThemeHydrated = useThemeStore((state) => state.hasHydrated);
+  const theme = useThemeStore((state) => state.theme);
+
   useEffect(() => {
     loadFavorites();
     loadRecentContacts();
-  }, [loadFavorites, loadRecentContacts]);
+    loadTheme();
+  }, [loadFavorites, loadRecentContacts, loadTheme]);
 
-  const isReady = hasFavoritesHydrated && hasRecentContactsHydrated;
+  const isReady =
+    hasFavoritesHydrated && hasRecentContactsHydrated && hasThemeHydrated;
+
+  const colors = getColors(theme);
 
   if (!isReady) {
     return (
       <SafeAreaProvider>
-        <View style={styles.loadingContainer}>
-          <StatusBar barStyle="dark-content" />
-          <ActivityIndicator size="large" />
+        <View
+          style={[
+            styles.loadingContainer,
+            { backgroundColor: colors.background },
+          ]}
+        >
+          <StatusBar
+            barStyle={theme === "dark" ? "light-content" : "dark-content"}
+          />
+          <ActivityIndicator size="large" color={colors.accent} />
         </View>
       </SafeAreaProvider>
     );
@@ -36,7 +53,9 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
+      />
       <AppNavigator />
     </SafeAreaProvider>
   );
@@ -47,6 +66,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F8FAFC",
   },
 });

@@ -3,7 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
-import { colors } from "../theme/colors";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 
 type FavoritesScreenProps = {
@@ -20,11 +21,18 @@ export default function FavoritesScreen({
     favoriteIds.includes(employee.id),
   );
 
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
       <View style={styles.container}>
-        <Text style={styles.title}>Favorites</Text>
-        <Text style={styles.subtitle}>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>
+          Favorites
+        </Text>
+        <Text style={[styles.subtitle, { color: colors.textMuted }]}>
           Quick access to your saved employee contacts.
         </Text>
 
@@ -44,8 +52,10 @@ export default function FavoritesScreen({
           )}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>No favorite contacts yet</Text>
-              <Text style={styles.emptyText}>
+              <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>
+                No favorite contacts yet
+              </Text>
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
                 Save employees from the directory to see them here.
               </Text>
             </View>
@@ -59,7 +69,6 @@ export default function FavoritesScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
@@ -69,13 +78,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: colors.textMuted,
     marginBottom: spacing.xxl,
   },
   list: {
@@ -92,13 +99,11 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
   emptyText: {
     fontSize: 14,
     lineHeight: 21,
-    color: colors.textMuted,
     textAlign: "center",
   },
 });

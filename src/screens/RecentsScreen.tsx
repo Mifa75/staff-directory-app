@@ -4,7 +4,8 @@ import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
 import { useRecentContactsStore } from "../store/useRecentContactsStore";
-import { colors } from "../theme/colors";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 
 type RecentsScreenProps = {
@@ -24,11 +25,20 @@ export default function RecentsScreen({
     .map((id) => EMPLOYEES.find((employee) => employee.id === id))
     .filter((employee): employee is Employee => employee !== undefined);
 
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
       <View style={styles.container}>
-        <Text style={styles.title}>Recents</Text>
-        <Text style={styles.subtitle}>Recently viewed employee contacts.</Text>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>
+          Recents
+        </Text>
+        <Text style={[styles.subtitle, { color: colors.textMuted }]}>
+          Recently viewed employee contacts.
+        </Text>
 
         <FlatList
           data={recentEmployees}
@@ -46,8 +56,10 @@ export default function RecentsScreen({
           )}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>No recent contacts yet</Text>
-              <Text style={styles.emptyText}>
+              <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>
+                No recent contacts yet
+              </Text>
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
                 Open an employee profile to see recent contacts here.
               </Text>
             </View>
@@ -61,7 +73,6 @@ export default function RecentsScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
@@ -71,13 +82,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: colors.textMuted,
     marginBottom: spacing.xxl,
   },
   list: {
@@ -94,13 +103,11 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
   emptyText: {
     fontSize: 14,
     lineHeight: 21,
-    color: colors.textMuted,
     textAlign: "center",
   },
 });

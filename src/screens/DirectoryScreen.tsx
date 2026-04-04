@@ -11,7 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
-import { colors } from "../theme/colors";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 
 type DirectoryScreenProps = {
@@ -27,6 +28,9 @@ export default function DirectoryScreen({
 
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
 
   const filteredEmployees = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -46,18 +50,35 @@ export default function DirectoryScreen({
   }, [search]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
       <View style={styles.container}>
         <View style={styles.topRow}>
-          <Text style={styles.title}>Directory</Text>
-          <Text style={styles.subtitle}>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>
+            Directory
+          </Text>
+          <Text style={[styles.subtitle, { color: colors.textMuted }]}>
             Search employees by name, role, department, or location.
           </Text>
         </View>
 
         <View style={styles.actionsRow}>
-          <Pressable onPress={onLogout} style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>Log out</Text>
+          <Pressable
+            onPress={onLogout}
+            style={[
+              styles.secondaryButton,
+              { backgroundColor: colors.secondarySurface },
+            ]}
+          >
+            <Text
+              style={[
+                styles.secondaryButtonText,
+                { color: colors.secondaryText },
+              ]}
+            >
+              Log out
+            </Text>
           </Pressable>
         </View>
 
@@ -65,7 +86,15 @@ export default function DirectoryScreen({
           value={search}
           onChangeText={setSearch}
           placeholder="Search employees..."
-          style={styles.searchInput}
+          placeholderTextColor={colors.textMuted}
+          style={[
+            styles.searchInput,
+            {
+              borderColor: colors.borderInput,
+              backgroundColor: colors.surface,
+              color: colors.textPrimary,
+            },
+          ]}
         />
 
         <FlatList
@@ -84,8 +113,10 @@ export default function DirectoryScreen({
           )}
           ListEmptyComponent={
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>No employees found</Text>
-              <Text style={styles.emptyText}>
+              <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>
+                No employees found
+              </Text>
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
                 Try another name, department, role, or location.
               </Text>
             </View>
@@ -99,7 +130,6 @@ export default function DirectoryScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
@@ -112,13 +142,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: colors.textMuted,
   },
   actionsRow: {
     flexDirection: "row",
@@ -128,21 +156,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
     borderRadius: 10,
-    backgroundColor: colors.secondarySurface,
   },
   secondaryButtonText: {
     fontSize: 14,
     fontWeight: "600",
-    color: colors.textPrimary,
   },
   searchInput: {
     height: 52,
     borderWidth: 1,
-    borderColor: colors.borderInput,
     borderRadius: 12,
     paddingHorizontal: spacing.xl,
     fontSize: 16,
-    backgroundColor: colors.primaryText,
     marginBottom: spacing.xxl,
   },
   list: {
@@ -159,13 +183,11 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
   emptyText: {
     fontSize: 14,
     lineHeight: 21,
-    color: colors.textMuted,
     textAlign: "center",
   },
 });

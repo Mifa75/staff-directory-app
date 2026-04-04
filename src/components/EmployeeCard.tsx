@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { Employee } from "../data/employees";
-import { colors } from "../theme/colors";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 
 type EmployeeCardProps = {
@@ -16,8 +17,19 @@ export default function EmployeeCard({
   isFavorite,
   onToggleFavorite,
 }: EmployeeCardProps) {
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
+
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+        },
+      ]}
+    >
       <Pressable
         onPress={onPress}
         style={({ pressed }) => [
@@ -25,17 +37,25 @@ export default function EmployeeCard({
           pressed && styles.mainPressablePressed,
         ]}
       >
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{getInitials(employee.name)}</Text>
+        <View style={[styles.avatar, { backgroundColor: colors.textPrimary }]}>
+          <Text style={[styles.avatarText, { color: colors.primaryText }]}>
+            {getInitials(employee.name)}
+          </Text>
         </View>
 
         <View style={styles.cardContent}>
-          <Text style={styles.name}>{employee.name}</Text>
-          <Text style={styles.role}>{employee.role}</Text>
-          <Text style={styles.meta}>
+          <Text style={[styles.name, { color: colors.textPrimary }]}>
+            {employee.name}
+          </Text>
+          <Text style={[styles.role, { color: colors.textSecondary }]}>
+            {employee.role}
+          </Text>
+          <Text style={[styles.meta, { color: colors.textMuted }]}>
             {employee.department} • {employee.location}
           </Text>
-          <Text style={styles.email}>{employee.email}</Text>
+          <Text style={[styles.email, { color: colors.accent }]}>
+            {employee.email}
+          </Text>
         </View>
       </Pressable>
 
@@ -44,10 +64,13 @@ export default function EmployeeCard({
         hitSlop={8}
         style={({ pressed }) => [
           styles.favoriteButton,
+          { backgroundColor: colors.subtleSurface },
           pressed && styles.favoritePressed,
         ]}
       >
-        <Text style={styles.favoriteText}>{isFavorite ? "★" : "☆"}</Text>
+        <Text style={[styles.favoriteText, { color: colors.star }]}>
+          {isFavorite ? "★" : "☆"}
+        </Text>
       </Pressable>
     </View>
   );
@@ -66,10 +89,8 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "flex-start",
-    backgroundColor: colors.surface,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing.xxl,
     marginBottom: spacing.lg,
   },
@@ -84,13 +105,11 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: spacing.xl,
+    marginRight: spacing.lg,
   },
   avatarText: {
-    color: colors.surface,
     fontSize: 16,
     fontWeight: "700",
   },
@@ -100,28 +119,23 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: "700",
-    color: colors.textPrimary,
-    marginBottom: spacing.xxs,
+    marginBottom: spacing.xs,
   },
   role: {
     fontSize: 15,
-    color: colors.textSecondary,
-    marginBottom: spacing.xxs,
+    marginBottom: spacing.xs,
   },
   meta: {
     fontSize: 14,
-    color: colors.textMuted,
-    marginBottom: spacing.xxs,
+    marginBottom: spacing.xs,
   },
   email: {
     fontSize: 14,
-    color: colors.accent,
   },
   favoriteButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: colors.subtleSurface,
     alignItems: "center",
     justifyContent: "center",
     marginLeft: spacing.lg,
@@ -131,6 +145,5 @@ const styles = StyleSheet.create({
   },
   favoriteText: {
     fontSize: 20,
-    color: colors.star,
   },
 });

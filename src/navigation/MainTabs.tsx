@@ -4,11 +4,15 @@ import type { Employee } from "../data/employees";
 import DirectoryScreen from "../screens/DirectoryScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import RecentsScreen from "../screens/RecentsScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 
 export type MainTabParamList = {
   DirectoryTab: undefined;
   FavoritesTab: undefined;
   RecentsTab: undefined;
+  SettingsTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -22,15 +26,31 @@ export default function MainTabs({
   onLogout,
   onSelectEmployee,
 }: MainTabsProps) {
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
+
   return (
     <Tab.Navigator
       screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.background,
+        },
+        headerShadowVisible: false,
         headerTitleStyle: {
-          color: "#0f172a",
+          color: colors.textPrimary,
           fontWeight: "700",
         },
-        tabBarActiveTintColor: "#0f172a",
-        tabBarInactiveTintColor: "#64748b",
+        headerTintColor: colors.textPrimary,
+        tabBarStyle: {
+          backgroundColor: colors.surface,
+          borderTopColor: colors.border,
+        },
+        tabBarActiveTintColor: colors.textPrimary,
+        tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "600",
+        },
       }}
     >
       <Tab.Screen
@@ -75,6 +95,19 @@ export default function MainTabs({
         }}
       >
         {() => <RecentsScreen onSelectEmployee={onSelectEmployee} />}
+      </Tab.Screen>
+
+      <Tab.Screen
+        name="SettingsTab"
+        options={{
+          title: "Settings",
+          tabBarLabel: "Settings",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
+          ),
+        }}
+      >
+        {() => <SettingsScreen onLogout={onLogout} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

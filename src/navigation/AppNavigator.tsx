@@ -8,6 +8,8 @@ import { useState } from "react";
 import { type Employee } from "../data/employees";
 import EmployeeDetailScreen from "../screens/EmployeeDetailScreen";
 import LoginScreen from "../screens/LoginScreen";
+import { useThemeStore } from "../store/useThemeStore";
+import { getColors } from "../theme/colors";
 import MainTabs from "./MainTabs";
 
 export type RootStackParamList = {
@@ -23,26 +25,30 @@ type MainTabsNavigationProp = NativeStackNavigationProp<
   "MainTabs"
 >;
 
-type EmployeeDetailScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "EmployeeDetail"
->;
-
 type EmployeeDetailRouteProp = RouteProp<RootStackParamList, "EmployeeDetail">;
 
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const theme = useThemeStore((state) => state.theme);
+  const colors = getColors(theme);
 
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
+          headerStyle: {
+            backgroundColor: colors.background,
+          },
+          headerShadowVisible: false,
           headerTitleStyle: {
-            color: "#0F172A",
+            color: colors.textPrimary,
             fontWeight: "700",
           },
-          headerTintColor: "#0F172A",
+          headerTintColor: colors.textPrimary,
           headerBackTitle: "Back",
+          contentStyle: {
+            backgroundColor: colors.background,
+          },
         }}
       >
         {!isLoggedIn ? (
@@ -74,17 +80,8 @@ export default function AppNavigator() {
                 headerBackTitle: "Back",
               }}
             >
-              {({
-                route,
-                navigation,
-              }: {
-                route: EmployeeDetailRouteProp;
-                navigation: EmployeeDetailScreenNavigationProp;
-              }) => (
-                <EmployeeDetailScreen
-                  employee={route.params.employee}
-                  onBack={() => navigation.goBack()}
-                />
+              {({ route }: { route: EmployeeDetailRouteProp }) => (
+                <EmployeeDetailScreen employee={route.params.employee} />
               )}
             </Stack.Screen>
           </>
