@@ -1,5 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text } from "react-native";
 import type { Employee } from "../data/employees";
 import DirectoryScreen from "../screens/DirectoryScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
@@ -38,8 +38,8 @@ export default function MainTabs({
         options={{
           title: "Directory",
           tabBarLabel: "Directory",
-          tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 16 }}>📇</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="people-outline" size={size} color={color} />
           ),
         }}
       >
@@ -56,8 +56,8 @@ export default function MainTabs({
         options={{
           title: "Favorites",
           tabBarLabel: "Favorites",
-          tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 16 }}>⭐</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="star-outline" size={size} color={color} />
           ),
         }}
       >
@@ -69,8 +69,8 @@ export default function MainTabs({
         options={{
           title: "Recents",
           tabBarLabel: "Recents",
-          tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 16 }}>🕘</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="time-outline" size={size} color={color} />
           ),
         }}
       >

@@ -35,7 +35,16 @@ export default function AppNavigator() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleStyle: {
+            color: "#0F172A",
+            fontWeight: "700",
+          },
+          headerTintColor: "#0F172A",
+          headerBackTitle: "Back",
+        }}
+      >
         {!isLoggedIn ? (
           <Stack.Screen name="Login" options={{ headerShown: false }}>
             {() => <LoginScreen onLogin={() => setIsLoggedIn(true)} />}
@@ -60,7 +69,10 @@ export default function AppNavigator() {
 
             <Stack.Screen
               name="EmployeeDetail"
-              options={{ headerTitle: "Employee Details" }}
+              options={{
+                title: "Employee Details",
+                headerBackTitle: "Back",
+              }}
             >
               {({
                 route,

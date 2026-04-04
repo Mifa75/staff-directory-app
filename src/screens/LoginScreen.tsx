@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { colors } from "../theme/colors";
+import { spacing } from "../theme/spacing";
 
 type LoginScreenProps = {
   onLogin: () => void;
@@ -73,77 +75,77 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: spacing.xxxxl,
+    paddingVertical: spacing.huge,
     justifyContent: "center",
   },
   header: {
-    marginBottom: 32,
+    marginBottom: spacing.huge,
   },
   title: {
     fontSize: 32,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 12,
+    color: colors.textPrimary,
+    marginBottom: spacing.lg,
   },
   subtitle: {
     fontSize: 16,
     lineHeight: 24,
-    color: "#475569",
+    color: colors.textMuted,
   },
   form: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.primaryText,
     borderRadius: 16,
-    padding: 20,
+    padding: spacing.xxxl,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: colors.border,
   },
   inputGroup: {
-    marginBottom: 18,
+    marginBottom: spacing.xxxl,
   },
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#334155",
-    marginBottom: 8,
+    color: colors.textSecondary,
+    marginBottom: spacing.sm,
   },
   input: {
     height: 52,
     borderWidth: 1,
-    borderColor: "#CBD5E1",
+    borderColor: colors.borderInput,
     borderRadius: 12,
-    paddingHorizontal: 14,
+    paddingHorizontal: spacing.xl,
     fontSize: 16,
-    backgroundColor: "#FFFFFF",
-    color: "#0F172A",
+    backgroundColor: colors.primaryText,
+    color: colors.textPrimary,
   },
   button: {
-    marginTop: 8,
+    marginTop: spacing.sm,
     height: 52,
     borderRadius: 12,
-    backgroundColor: "#0F172A",
+    backgroundColor: colors.textPrimary,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonDisabled: {
-    backgroundColor: "#94A3B8",
+    backgroundColor: colors.buttonDisabled,
   },
   buttonPressed: {
     opacity: 0.85,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: colors.primaryText,
     fontSize: 16,
     fontWeight: "600",
   },
   helperText: {
-    marginTop: 14,
+    marginTop: spacing.xl,
     fontSize: 13,
-    color: "#64748B",
+    color: colors.textMuted,
     textAlign: "center",
   },
 });

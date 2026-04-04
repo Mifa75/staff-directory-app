@@ -1,5 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { Employee } from "../data/employees";
+import { colors } from "../theme/colors";
+import { spacing } from "../theme/spacing";
 
 type EmployeeCardProps = {
   employee: Employee;
@@ -64,12 +66,12 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "flex-start",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.surface,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
-    padding: 16,
-    marginBottom: 12,
+    borderColor: colors.border,
+    padding: spacing.xxl,
+    marginBottom: spacing.lg,
   },
   mainPressable: {
     flex: 1,
@@ -82,13 +84,13 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: "#0F172A",
+    backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 14,
+    marginRight: spacing.xl,
   },
   avatarText: {
-    color: "#FFFFFF",
+    color: colors.surface,
     fontSize: 16,
     fontWeight: "700",
   },
@@ -98,37 +100,37 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 4,
+    color: colors.textPrimary,
+    marginBottom: spacing.xxs,
   },
   role: {
     fontSize: 15,
-    color: "#334155",
-    marginBottom: 4,
+    color: colors.textSecondary,
+    marginBottom: spacing.xxs,
   },
   meta: {
     fontSize: 14,
-    color: "#64748B",
-    marginBottom: 4,
+    color: colors.textMuted,
+    marginBottom: spacing.xxs,
   },
   email: {
     fontSize: 14,
-    color: "#2563EB",
+    color: colors.accent,
   },
   favoriteButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#F1F5F9",
+    backgroundColor: colors.subtleSurface,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 12,
+    marginLeft: spacing.lg,
   },
   favoritePressed: {
     opacity: 0.75,
   },
   favoriteText: {
     fontSize: 20,
-    color: "#F59E0B",
+    color: colors.star,
   },
 });

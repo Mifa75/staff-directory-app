@@ -4,6 +4,8 @@ import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
 import { useRecentContactsStore } from "../store/useRecentContactsStore";
+import { colors } from "../theme/colors";
+import { spacing } from "../theme/spacing";
 
 type RecentsScreenProps = {
   onSelectEmployee: (employee: Employee) => void;
@@ -59,46 +61,46 @@ export default function RecentsScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingHorizontal: spacing.xxxl,
+    paddingTop: spacing.lg,
   },
   title: {
     fontSize: 30,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 8,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: "#475569",
-    marginBottom: 16,
+    color: colors.textMuted,
+    marginBottom: spacing.xxl,
   },
   list: {
     flex: 1,
   },
   listContent: {
-    paddingBottom: 24,
+    paddingBottom: spacing.xxxxl,
   },
   emptyState: {
     marginTop: 40,
     alignItems: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xxxxl,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 8,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
   },
   emptyText: {
     fontSize: 14,
     lineHeight: 21,
-    color: "#64748B",
+    color: colors.textMuted,
     textAlign: "center",
   },
 });

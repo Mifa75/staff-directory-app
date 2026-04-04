@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
 import { useRecentContactsStore } from "../store/useRecentContactsStore";
+import { colors } from "../theme/colors";
+import { spacing } from "../theme/spacing";
 import { openEmail, openPhone } from "../utils/contactActions";
 
 type EmployeeDetailsScreenProps = {
@@ -36,7 +38,6 @@ function getInitials(name: string) {
 
 export default function EmployeeDetailScreen({
   employee,
-  onBack,
 }: EmployeeDetailsScreenProps) {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
@@ -53,10 +54,6 @@ export default function EmployeeDetailScreen({
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Pressable onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </Pressable>
-
         <View style={styles.headerCard}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>{getInitials(employee.name)}</Text>
@@ -112,114 +109,101 @@ export default function EmployeeDetailScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-  },
-  backButton: {
-    alignSelf: "flex-start",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-    backgroundColor: "#E2E8F0",
-    marginBottom: 20,
-  },
-  backButtonText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#0F172A",
+    paddingHorizontal: spacing.xxxl,
+    paddingTop: spacing.lg,
   },
   buttonPressed: {
     opacity: 0.8,
   },
   headerCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.surface,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
-    padding: 24,
+    borderColor: colors.border,
+    padding: spacing.xxxxl,
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: spacing.xxl,
   },
   avatar: {
     width: 76,
     height: 76,
     borderRadius: 38,
-    backgroundColor: "#0F172A",
+    backgroundColor: colors.textPrimary,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16,
+    marginBottom: spacing.xxl,
   },
   avatarText: {
-    color: "#FFFFFF",
+    color: colors.primaryText,
     fontSize: 24,
     fontWeight: "700",
   },
   name: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 6,
+    color: colors.textPrimary,
+    marginBottom: spacing.xs,
   },
   role: {
     fontSize: 17,
-    color: "#334155",
-    marginBottom: 6,
+    color: colors.textSecondary,
+    marginBottom: spacing.xs,
   },
   meta: {
     fontSize: 15,
-    color: "#64748B",
+    color: colors.textMuted,
   },
   favoriteButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: spacing.xxl,
+    paddingVertical: spacing.md,
     borderRadius: 10,
-    backgroundColor: "#FEF3C7",
+    backgroundColor: colors.warningSurface,
   },
   favoriteButtonText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#92400E",
+    color: colors.warningText,
   },
   infoCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.primaryText,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
-    padding: 20,
-    marginBottom: 20,
+    borderColor: colors.border,
+    padding: spacing.xxxl,
+    marginBottom: spacing.xxxl,
   },
   infoRow: {
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   label: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#64748B",
-    marginBottom: 4,
+    color: colors.textMuted,
+    marginBottom: spacing.xxs,
     textTransform: "uppercase",
   },
   value: {
     fontSize: 16,
-    color: "#0F172A",
+    color: colors.textPrimary,
   },
   actionsRow: {
     flexDirection: "row",
-    gap: 12,
+    gap: spacing.lg,
   },
   primaryButton: {
     flex: 1,
     height: 52,
     borderRadius: 12,
-    backgroundColor: "#0F172A",
+    backgroundColor: colors.textPrimary,
     alignItems: "center",
     justifyContent: "center",
   },
   primaryButtonText: {
-    color: "#FFFFFF",
+    color: colors.primaryText,
     fontSize: 16,
     fontWeight: "600",
   },
@@ -227,12 +211,12 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 52,
     borderRadius: 12,
-    backgroundColor: "#E2E8F0",
+    backgroundColor: colors.border,
     alignItems: "center",
     justifyContent: "center",
   },
   secondaryButtonText: {
-    color: "#0F172A",
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: "600",
   },

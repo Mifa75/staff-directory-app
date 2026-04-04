@@ -11,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import EmployeeCard from "../components/EmployeeCard";
 import { EMPLOYEES, type Employee } from "../data/employees";
 import { useFavoritesStore } from "../store/useFavoritesStore";
+import { colors } from "../theme/colors";
+import { spacing } from "../theme/spacing";
 
 type DirectoryScreenProps = {
   onLogout: () => void;
@@ -97,73 +99,73 @@ export default function DirectoryScreen({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingHorizontal: spacing.xxxl,
+    paddingTop: spacing.lg,
   },
   topRow: {
-    marginBottom: 20,
+    marginBottom: spacing.xxxl,
   },
   title: {
     fontSize: 30,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 8,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: "#475569",
+    color: colors.textMuted,
   },
   actionsRow: {
     flexDirection: "row",
-    marginBottom: 16,
+    marginBottom: spacing.xxl,
   },
   secondaryButton: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
     borderRadius: 10,
-    backgroundColor: "#E2E8F0",
+    backgroundColor: colors.secondarySurface,
   },
   secondaryButtonText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#0F172A",
+    color: colors.textPrimary,
   },
   searchInput: {
     height: 52,
     borderWidth: 1,
-    borderColor: "#CBD5E1",
+    borderColor: colors.borderInput,
     borderRadius: 12,
-    paddingHorizontal: 14,
+    paddingHorizontal: spacing.xl,
     fontSize: 16,
-    backgroundColor: "#FFFFFF",
-    marginBottom: 16,
+    backgroundColor: colors.primaryText,
+    marginBottom: spacing.xxl,
   },
   list: {
     flex: 1,
   },
   listContent: {
-    paddingBottom: 24,
+    paddingBottom: spacing.xxxxl,
   },
   emptyState: {
-    marginTop: 40,
+    marginTop: spacing.huge,
     alignItems: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xxxxl,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 8,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
   },
   emptyText: {
     fontSize: 14,
     lineHeight: 21,
-    color: "#64748B",
+    color: colors.textMuted,
     textAlign: "center",
   },
 });
